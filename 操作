@@ -26,3 +26,4 @@
               let message = req.weixin;
               console.log(message);
           }));
+    1.1.8 npm i -S mysql

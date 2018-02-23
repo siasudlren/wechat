@@ -1,0 +1,13 @@
+DROP DATABASE IF EXISTS db;
+CREATE DATABASE db CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS db.chat;
+CREATE TABLE db.chat(
+    id INT AUTO_INCREMENT PRIMARY KEY 'id PK',
+    question TEXT NOT NULL COMMIT '问题',
+    answer TEXT NOT NULL COMMIT '回答'
+)COMMIT '聊天室'
+
+INSERT INTO db.chat VALUE(NULL,'您好','您好!');
+INSERT INTO db.chat VALUE(NULL,'你是谁?','我是聊天机器人.');
+INSERT INTO db.chat VALUE(NULL,'再见','再见!');
