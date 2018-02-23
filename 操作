@@ -8,3 +8,4 @@
           let app=new EXPRESS();
           app.listen(3000);
     1.1.4 在文件夹内 npm i -g ngrok
+    1.1.5 在文件夹内 npm i -S wechat
