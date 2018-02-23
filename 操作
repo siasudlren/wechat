@@ -1,11 +1,27 @@
 1. 创建文件夹 wechat
   1.1 创建文件夹 server-official-account
-    1.1.1 在文件夹内 npm init 生成package.json
-    1.1.2 在文件夹内 npm i -S express 生成express组件
-    1.1.3 在文件夹内 创建文件app.js
+    1.1.1 npm init 生成package.json
+    1.1.2 npm i -S express 生成express组件
+    1.1.3 创建文件app.js
           创建服务器
           const EXPRESS = require('express');
           let app=new EXPRESS();
           app.listen(3000);
-    1.1.4 在文件夹内 npm i -g ngrok
-    1.1.5 在文件夹内 npm i -S wechat
+    1.1.4 npm i -g ngrok    运行命令 ngork.exe http 3000  公众号 输入url 获取EncodingAESKey码
+    1.1.5 npm i -S wechat
+    1.1.6 npm i -g supervisor
+    1.1.7 引入wechat
+          const WECHAT = require('wechat');
+
+          let config = {
+              appid: 'wxe1c53da14bbdb7b9',    微信公众平台  开发者id
+              token: 'weixin',                微信公众平台  Token
+              encodingAESKey: 'iRWyy5zxQNVMJHxkBgjHHmR3esLcLBTGWCwo5VItcEe'
+          };
+
+          app.use(EXPRESS.query());
+
+          app.get('/',WECHAT(config,(req,res,next)=>{
+              let message = req.weixin;
+              console.log(message);
+          }));
