@@ -1,6 +1,6 @@
 const EXPRESS = require('express');
 const WECHAT = require('wechat');
-const MYSQL= require('mysql');
+const MYSQL = require('mysql');
 
 let app = new EXPRESS();
 
@@ -9,16 +9,16 @@ app.use(EXPRESS.query());
 let config = {
     appid: 'wxe1c53da14bbdb7b9',
     token: 'weixin',
-    encodingAESKey: 'EuxmUC2PnNHnRWl4pAByrhd0hufHVmn2X2gx5GaMCqO',
-    checkSignature:true
+    encodingAESKey: 'ljKmxeQ19FNQUwbJlzqaAbRC2k0gYNkJVAtjPB4QlcG',
+    checkSignature: true
 };
 let pool = MYSQL.createPool({
-    user:'root'
+    user: 'root'
 });
 
-app.use('/',WECHAT(config,(req,res)=>{
+app.use('/', WECHAT(config, (req, res) => {
     let message = req.weixin;
-    let content=message.Content;
+    let content = message.Content;
     console.log(content);
     // let htmlUrl='HTML 文档: http://www.w3scholl.com.cn/html/index.asp';
     // if(message.Content.includes('HTML')){
@@ -31,13 +31,13 @@ app.use('/',WECHAT(config,(req,res)=>{
     //         url:'http://biying.com'
     //     })
     // }
-    let sql='SELECT * FROM db.chat WHERE question LIKE ?';
-    pool.query(sql,[content],(err,results)=>{
-        if(results.length===1){
-            res.reply(results[0].answer);
-        }else{
-            res.reply('你在说什么,我听不懂...');
+    let sql = `SELECT * FROM db.chat WHERE question LIKE ?`;
+    pool.query(sql, [`%${content}%`], (err, results) => {
+        let answer ='你在说什么?';
+        if (results.length === 1) {
+            answer=results[0].answer
         }
+        res.reply(answer);
     })
 
 }));
