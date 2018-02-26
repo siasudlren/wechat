@@ -7,7 +7,7 @@ let pool = MYSQL.createPool({
     user: 'root'
 });
 
-const SQL = 'INSERT INTO db.ip(min, max, loc) VALUE ?';
+
 let path = PATH.join(__dirname, 'ip.data');
 let eolRegex = process.platform === 'win32' ? /\r\n/ : /\n/;
 let index = 0;
@@ -20,6 +20,13 @@ FS.readFileSync(path, 'UTF-8')
         let loc = line.replace(min, '').replace(max, '').trim();
         array[index++] = [min, max, loc];
     });
-pool.query(SQL, [array], (err, results) => {
-    console.log(results.affectedRows); // 448443
-});
+
+const SQL = 'INSERT INTO db.ip(min, max, loc) VALUE ?';
+const BATCH = 10000;
+for (let i = 0; i < array.length / BATCH; i++) {
+    let arr = array.slice(i * BATCH, (i + 1) * BATCH);
+    pool.query(SQL, [arr], (err, results) => {
+        if (err) throw err;
+        console.log(results.affectedRows);
+    });
+}
